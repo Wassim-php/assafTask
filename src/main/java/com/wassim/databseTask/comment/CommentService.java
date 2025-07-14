@@ -2,7 +2,7 @@ package com.wassim.databseTask.comment;
 
 import java.util.List;
 
-import com.wassim.dto.CommentDTO;
+import com.wassim.databseTask.*;
 
 public interface CommentService {
     CommentDTO create(CommentDTO commentDTO);

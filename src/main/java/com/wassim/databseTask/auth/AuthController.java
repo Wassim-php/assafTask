@@ -1,4 +1,4 @@
-package com.wassim.databseTask.controllers;
+package com.wassim.databseTask.auth;
 
 import org.springframework.security.core.AuthenticationException;
 
@@ -11,10 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.wassim.databseTask.security.AuthRequest;
-import com.wassim.databseTask.security.AuthResponse;
-import com.wassim.databseTask.security.JwtUtility;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 

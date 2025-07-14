@@ -1,5 +1,5 @@
 package com.wassim.databseTask.tag;
-import com.wassim.dto.TagDTO;
+import com.wassim.databseTask.tag.*;
 import java.util.List;
 
 public interface TagService {

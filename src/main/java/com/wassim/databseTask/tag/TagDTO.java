@@ -1,6 +1,8 @@
-package com.wassim.dto;
+package com.wassim.databseTask.tag;
 
 import java.util.List;
+
+import com.wassim.databseTask.comment.CommentDTO;
 
 public class TagDTO {
     private Long id;

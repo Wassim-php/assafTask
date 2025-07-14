@@ -1,4 +1,4 @@
-package com.wassim.dto;
+package com.wassim.databseTask.user;
 
 public class UserDTO {
     private Long id;

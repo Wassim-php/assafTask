@@ -1,5 +1,8 @@
 package com.wassim.databseTask.comment;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+
 import com.wassim.databseTask.tag.TagEntity;
+import com.wassim.databseTask.user.UserEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,6 +22,10 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "tag_id", nullable = false)
     private TagEntity tag;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
     
     public Long getId() {
         return id;
@@ -40,6 +47,14 @@ public class CommentEntity {
     }
     public void setTag(TagEntity tag){
         this.tag = tag;
+    }
+
+    public UserEntity getUser(){
+        return this.user;
+    }
+
+    public void setUser(UserEntity user){
+        this.user = user;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.wassim.dto;
+package com.wassim.databseTask.comment;
 
 public class CommentDTO {
     private Long id;

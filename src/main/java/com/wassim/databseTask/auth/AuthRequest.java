@@ -1,4 +1,4 @@
-package com.wassim.databseTask.security;
+package com.wassim.databseTask.auth;
 
 public class AuthRequest {
     private String username;

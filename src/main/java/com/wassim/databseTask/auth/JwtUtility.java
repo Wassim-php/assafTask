@@ -1,4 +1,4 @@
-package com.wassim.databseTask.security;
+package com.wassim.databseTask.auth;
 
 import java.util.Date;
 

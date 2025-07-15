@@ -1,4 +1,4 @@
-package com.wassim.databseTask.auth;
+package com.wassim.databseTask.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ public class SecurityConfig {
          http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/auth/**", "/api/users/create").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

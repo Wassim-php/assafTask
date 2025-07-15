@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wassim.databseTask.comment.CommentDTO;
+import com.wassim.databseTask.Response.ApiResponse;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
 import com.wassim.databseTask.user.UserEntity;
 import com.wassim.databseTask.user.UserServiceImpl;
@@ -42,51 +43,52 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDTO create(TagDTO tagDTO) {
+    public ApiResponse<TagDTO> create(TagDTO tagDTO) {
         TagEntity entity = this.mapFrom(tagDTO);
         entity.setUser(userService.getCurrentUser());
-        return mapTo(tagRepository.save(entity));
+        TagDTO saved = mapTo(tagRepository.save(entity));
+        return new ApiResponse<>("Tag created successfully", saved, true);
     }
 
     @Override
-    public List<TagDTO> getAll() {
+    public ApiResponse<List<TagDTO>> getAll() {
         List<TagEntity> tags = tagRepository.findAll();
-        return tags.stream().map(this::mapTo).toList();
+        List<TagDTO> dtos = tags.stream().map(this::mapTo).toList();
+        return new ApiResponse<>("Tags retrieved successfully", dtos, true);
     }
 
     @Override
-    public TagDTO getById(Long id) {
+    public ApiResponse<TagDTO> getById(Long id) {
         TagEntity tag = tagRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
-        return mapTo(tag);
+        return new ApiResponse<>("Tag found", mapTo(tag), true);
     }
-
-   @Override
-    public TagDTO update(Long id, TagDTO tagDTO) {
-    TagEntity tag = tagRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Tag not found"));
-        System.out.println("Current user ID: " + userService.getCurrentUser().getId());
-        System.out.println("Tag owner ID: " + tag.getUser().getId());
-
-    UserEntity currentUser = userService.getCurrentUser();
-    if (!tag.getUser().getId().equals(currentUser.getId())) {
-        throw new RuntimeException("You are not authorized to update this tag");
-    }
-
-    tag.setName(tagDTO.getName());
-    return mapTo(tagRepository.save(tag));
-    }
-
 
     @Override
-    public void delete(Long id) {
-    TagEntity tag = tagRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Tag not found"));
+    public ApiResponse<TagDTO> update(Long id, TagDTO tagDTO) {
+        TagEntity tag = tagRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
 
-    if (!tag.getUser().getId().equals(userService.getCurrentUser().getId())) {
-        throw new RuntimeException("You are not authorized to delete this tag");
+        UserEntity currentUser = userService.getCurrentUser();
+        if (!tag.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("You are not authorized to update this tag");
+        }
+
+        tag.setName(tagDTO.getName());
+        TagDTO updated = mapTo(tagRepository.save(tag));
+        return new ApiResponse<>("Tag updated successfully", updated, true);
     }
 
-    tagRepository.deleteById(id);
+    @Override
+    public ApiResponse<Void> delete(Long id) {
+        TagEntity tag = tagRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
+
+        if (!tag.getUser().getId().equals(userService.getCurrentUser().getId())) {
+            throw new RuntimeException("You are not authorized to delete this tag");
+        }
+
+        tagRepository.deleteById(id);
+        return new ApiResponse<>("Tag deleted successfully", null, true);
     }
 }

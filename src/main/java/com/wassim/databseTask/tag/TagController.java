@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wassim.databseTask.tag.TagService;
-import com.wassim.Response.ApiResponse;
+import com.wassim.databseTask.Response.ApiResponse;
 import com.wassim.databseTask.tag.*;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,34 +29,29 @@ public class TagController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<TagDTO>> createTag(@RequestBody TagDTO tagDTO) {
-    TagDTO created = tagService.create(tagDTO);
-    return new ResponseEntity<ApiResponse<TagDTO>>(new ApiResponse<TagDTO>("Tag created", created, true), HttpStatus.CREATED);
+        return ResponseEntity.ok(tagService.create(tagDTO));
     }
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<TagDTO>>> getAllTags() {
-        List<TagDTO> tags = tagService.getAll();
-        return ResponseEntity.ok(new ApiResponse<>("All tags retrieved",  tags, true));
+        return ResponseEntity.ok(tagService.getAll());
     }
 
 
    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<TagDTO>> getTagById(@PathVariable Long id) {
-    TagDTO tag = tagService.getById(id);
-    return ResponseEntity.ok(new ApiResponse<>("Tag retrieved successfully", tag, true));
+    return ResponseEntity.ok(tagService.getById(id));
     }
 
 
    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<TagDTO>> updateTag(@PathVariable Long id, @RequestBody TagDTO tagDTO) {
-        TagDTO updated = tagService.update(id, tagDTO);
-        return ResponseEntity.ok(new ApiResponse<>("Tag updated successfully", updated, true));
+       return ResponseEntity.ok(tagService.update(id, tagDTO));
     }
 
         @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteTag(@PathVariable Long id) {
-        tagService.delete(id);
-        return ResponseEntity.ok(new ApiResponse<>("Tag deleted", null, true));
+        return ResponseEntity.ok(tagService.delete(id));
     }
     
     

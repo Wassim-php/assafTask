@@ -3,16 +3,17 @@ package com.wassim.databseTask.comment;
 import java.util.List;
 
 import com.wassim.databseTask.*;
+import com.wassim.databseTask.Response.ApiResponse;
 
 public interface CommentService {
-    CommentDTO create(CommentDTO commentDTO);
+    ApiResponse<CommentDTO> create(CommentDTO commentDTO);
 
-    List<CommentDTO> getAll();
+    ApiResponse<List<CommentDTO>> getAll();
 
-    CommentDTO getById(Long id);
+    ApiResponse<CommentDTO> getById(Long id);
 
-    CommentDTO update(Long id, CommentDTO commentDTO);
+    ApiResponse<CommentDTO> update(Long id, CommentDTO commentDTO);
 
-    void delete(Long id);
+    ApiResponse<Void> delete(Long id);
     
 }

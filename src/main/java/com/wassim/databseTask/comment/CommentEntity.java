@@ -8,10 +8,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 @Entity
+@Getter
+@Setter
 public class CommentEntity {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -27,34 +31,6 @@ public class CommentEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public TagEntity getTag(){
-        return tag;
-    }
-    public void setTag(TagEntity tag){
-        this.tag = tag;
-    }
-
-    public UserEntity getUser(){
-        return this.user;
-    }
-
-    public void setUser(UserEntity user){
-        this.user = user;
-    }
+   
 
 }

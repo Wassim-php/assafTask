@@ -2,9 +2,10 @@ package com.wassim.databseTask.comment;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wassim.Response.ApiResponse;
 import com.wassim.databseTask.*;
+import com.wassim.databseTask.Response.ApiResponse;
 
+import java.rmi.server.RMIClassLoader;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,32 +28,27 @@ public class CommentController {
 
      @PostMapping("/create")
     public ResponseEntity<ApiResponse<CommentDTO>> create(@RequestBody CommentDTO dto) {
-        CommentDTO created = commentService.create(dto);
-        return ResponseEntity.ok(new ApiResponse<>("Comment created successfully",  created, true));
+        return ResponseEntity.ok(commentService.create(dto));
     }
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<CommentDTO>>> getAll() {
-        List<CommentDTO> all = commentService.getAll();
-        return ResponseEntity.ok(new ApiResponse<>("All comments retrieved", all, true));
+        return ResponseEntity.ok(commentService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CommentDTO>> getById(@PathVariable Long id) {
-        CommentDTO comment = commentService.getById(id);
-        return ResponseEntity.ok(new ApiResponse<>("Comment retrieved",comment, true));
+        return ResponseEntity.ok(commentService.getById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CommentDTO>> update(@PathVariable Long id, @RequestBody CommentDTO dto) {
-        CommentDTO updated = commentService.update(id, dto);
-        return ResponseEntity.ok(new ApiResponse<>("Comment updated", updated, true));
+        return ResponseEntity.ok(commentService.update(id, dto));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-        commentService.delete(id);
-        return ResponseEntity.ok(new ApiResponse<>("Comment deleted", null, true));
+        return ResponseEntity.ok(commentService.delete(id));
     }
     
 }

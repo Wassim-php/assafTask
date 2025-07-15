@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wassim.databseTask.Response.ApiResponse;
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.tag.TagRepository;
 import com.wassim.databseTask.tag.TagServiceImpl;
@@ -51,49 +52,51 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO create(CommentDTO dto) {
+    public ApiResponse<CommentDTO> create(CommentDTO dto) {
         CommentEntity entity = this.mapFrom(dto);
         entity.setUser(userService.getCurrentUser());
-        return mapTo(commentRepositry.save(entity));
+        CommentDTO saved = mapTo(commentRepositry.save(entity));
+        return new ApiResponse<CommentDTO>("Comment created successfully", saved, true);
     }
 
     @Override
-    public List<CommentDTO> getAll() {
-        return commentRepositry.findAll().stream()
-                .map(this::mapTo)
-                .collect(Collectors.toList());
-    }
+public ApiResponse<List<CommentDTO>> getAll() {
+    List<CommentDTO> comments = commentRepositry.findAll()
+        .stream().map(this::mapTo).collect(Collectors.toList());
+    return new ApiResponse<>("Comments fetched successfully", comments, true);
+}
+
+   @Override
+public ApiResponse<CommentDTO> getById(Long id) {
+    CommentEntity comment = commentRepositry.findById(id)
+        .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+    return new ApiResponse<>("Comment found", mapTo(comment), true);
+}
 
     @Override
-    public CommentDTO getById(Long id) {
-        return commentRepositry.findById(id)
-                .map(this::mapTo)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
-    }
+public ApiResponse<CommentDTO> update(Long id, CommentDTO dto) {
+    CommentEntity entity = commentRepositry.findById(id)
+        .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-    @Override
-    public CommentDTO update(Long id, CommentDTO dto) {
-        CommentEntity entity = commentRepositry.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
-
-        entity.setContent(dto.getContent());
-
-        if (dto.getTagId() != null) {
-            TagEntity tag = tagRepository.findById(dto.getTagId())
-                    .orElseThrow(() -> new RuntimeException("Tag not found"));
-            entity.setTag(tag);
-        }
-
-        UserEntity currentUser = userService.getCurrentUser();
+    UserEntity currentUser = userService.getCurrentUser();
     if (!entity.getUser().getId().equals(currentUser.getId())) {
         throw new RuntimeException("You are not authorized to update this comment");
     }
 
-        return mapTo(commentRepositry.save(entity));
+    entity.setContent(dto.getContent());
+
+    if (dto.getTagId() != null) {
+        TagEntity tag = tagRepository.findById(dto.getTagId())
+            .orElseThrow(() -> new RuntimeException("Tag not found"));
+        entity.setTag(tag);
     }
 
+    return new ApiResponse<>("Comment updated successfully", mapTo(commentRepositry.save(entity)), true);
+}
+
     @Override
-public void delete(Long id) {
+public ApiResponse<Void> delete(Long id) {
     CommentEntity comment = commentRepositry.findById(id)
         .orElseThrow(() -> new RuntimeException("Comment not found"));
 
@@ -102,5 +105,6 @@ public void delete(Long id) {
     }
 
     commentRepositry.deleteById(id);
+    return new ApiResponse<>("Comment deleted successfully", null, true);
 }
 }

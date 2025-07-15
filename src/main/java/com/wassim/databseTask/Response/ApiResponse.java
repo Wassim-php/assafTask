@@ -1,4 +1,4 @@
-package com.wassim.Response;
+package com.wassim.databseTask.Response;
 
 public class ApiResponse<T> {
     private String message;

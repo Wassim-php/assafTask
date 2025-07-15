@@ -1,5 +1,10 @@
 package com.wassim.databseTask.comment;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CommentDTO {
     private Long id;
     private String content;
@@ -26,32 +31,6 @@ public class CommentDTO {
         this.tagId = tagId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public Long getTagId(){
-        return tagId;
-    }
-    public void setTagId(Long tagId){
-         this.tagId = tagId;
-    }
-    public String getTagName(){
-        return tagName;
-    }
-    public void setTagName(String tagName){
-        this.tagName = tagName;
-    }
+   
 
 }

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.wassim.Response.ApiResponse;
+import com.wassim.databseTask.Response.ApiResponse;
 import com.wassim.databseTask.global.Exceptions.BadRequestException;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
 

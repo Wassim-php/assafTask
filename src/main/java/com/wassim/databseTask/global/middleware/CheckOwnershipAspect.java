@@ -27,11 +27,9 @@ public class CheckOwnershipAspect {
     @Autowired
     private CommentRepositry commentRepositry;
 
-   
     @Before("execution(* com.wassim.databseTask.comment.CommentServiceImpl.update(..)) || " +
             "execution(* com.wassim.databseTask.comment.CommentServiceImpl.delete(..))")
     public void checkCommentOwnership(JoinPoint joinPoint) {
-       
 
         Long commentId = (Long) joinPoint.getArgs()[0];
         CommentEntity comment = commentRepositry.findById(commentId)
@@ -46,7 +44,6 @@ public class CheckOwnershipAspect {
     @Before("execution(* com.wassim.databseTask.tag.TagServiceImpl.update(..)) || " +
             "execution(* com.wassim.databseTask.tag.TagServiceImpl.delete(..))")
     public void checkTagOwnership(JoinPoint joinPoint) {
-        
 
         Long tagId = (Long) joinPoint.getArgs()[0];
         TagEntity tag = tagRepository.findById(tagId)

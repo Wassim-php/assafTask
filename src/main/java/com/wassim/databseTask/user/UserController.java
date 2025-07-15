@@ -20,15 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
-
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
-
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<UserDTO>> create(@RequestBody UserVMCreateDTO userDTO) {
@@ -41,19 +37,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDTO>> getById(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<UserDTO>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDTO>> update(@PathVariable Long id, @RequestBody UserVMUpdateDTO userDTO) { 
+    public ResponseEntity<ApiResponse<UserDTO>> update(@PathVariable Long id, @RequestBody UserVMUpdateDTO userDTO) {
         return ResponseEntity.ok(userService.update(id, userDTO));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         return ResponseEntity.ok(userService.delete(id));
     }
-    
-    
+
 }

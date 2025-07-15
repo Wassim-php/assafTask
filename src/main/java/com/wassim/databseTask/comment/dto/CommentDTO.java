@@ -15,7 +15,4 @@ public class CommentDTO {
     private Long tagId;
     private String tagName;
 
-
-   
-
 }

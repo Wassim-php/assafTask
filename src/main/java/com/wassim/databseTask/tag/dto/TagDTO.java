@@ -7,7 +7,6 @@ import com.wassim.databseTask.comment.dto.CommentDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 public class TagDTO {
@@ -15,7 +14,4 @@ public class TagDTO {
     private String name;
     private List<CommentDTO> comments;
 
-    
-
-     
 }

@@ -22,15 +22,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
-	
+
     @Autowired
     private CommentService commentService;
 
-     @PostMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<CommentDTO>> create(@Valid @RequestBody CommentVMCreateDTO dto) {
         return ResponseEntity.ok(commentService.create(dto));
     }
@@ -46,7 +45,8 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CommentDTO>> update(@Valid @PathVariable Long id, @RequestBody CommentVMUpdateDTO dto) {
+    public ResponseEntity<ApiResponse<CommentDTO>> update(@Valid @PathVariable Long id,
+            @RequestBody CommentVMUpdateDTO dto) {
         return ResponseEntity.ok(commentService.update(id, dto));
     }
 
@@ -54,5 +54,5 @@ public class CommentController {
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         return ResponseEntity.ok(commentService.delete(id));
     }
-    
+
 }

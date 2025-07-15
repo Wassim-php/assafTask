@@ -32,7 +32,8 @@ public class TagServiceImpl implements TagService {
         dto.setName(tag.getName());
         List<CommentDTO> commentDTOs = tag.getComments() != null
                 ? tag.getComments().stream()
-                        .map(comment -> new CommentDTO(comment.getId(), comment.getContent(), comment.getTag().getId(), comment.getTag().getName()))
+                        .map(comment -> new CommentDTO(comment.getId(), comment.getContent(), comment.getTag().getId(),
+                                comment.getTag().getName()))
                         .collect(Collectors.toList())
                 : new ArrayList<>();
         dto.setComments(commentDTOs);
@@ -48,12 +49,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ApiResponse<TagDTO> create(TagVMCreateDTO dto) {
-    TagEntity entity = new TagEntity();
-    entity.setName(dto.getName());
-    entity.setUser(userService.getCurrentUser());
+        TagEntity entity = new TagEntity();
+        entity.setName(dto.getName());
+        entity.setUser(userService.getCurrentUser());
 
-    TagDTO result = mapTo(tagRepository.save(entity));
-    return new ApiResponse<>("Tag created successfully", result, true);
+        TagDTO result = mapTo(tagRepository.save(entity));
+        return new ApiResponse<>("Tag created successfully", result, true);
     }
 
     @Override
@@ -72,8 +73,8 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ApiResponse<TagDTO> update(Long id, TagVMUpdateDTO tagDTO) {
-         TagEntity tag = tagRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
+        TagEntity tag = tagRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
         tag.setName(tagDTO.getName());
         TagDTO result = mapTo(tagRepository.save(tag));
         return new ApiResponse<>("Tag updated successfully", result, true);
@@ -83,7 +84,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public ApiResponse<Void> delete(Long id) {
         TagEntity tag = tagRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
         tagRepository.deleteById(id);
         return new ApiResponse<>("Tag deleted successfully", null, true);
     }

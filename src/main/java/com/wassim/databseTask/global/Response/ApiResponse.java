@@ -14,10 +14,4 @@ public class ApiResponse<T> {
     private T data;
     private boolean state;
 
-   
-
-    public boolean isSuccess() {
-        return state;
-    }
-
 }

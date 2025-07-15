@@ -9,6 +9,6 @@ import lombok.Setter;
 public class CommentVMUpdateDTO {
     @NotBlank(message = "Content cannot be blank")
     private String content;
-    @NotBlank(message = "Tag ID is required")       
+    @NotBlank(message = "Tag ID is required")
     private Long tagId;
 }

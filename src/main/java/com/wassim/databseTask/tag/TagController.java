@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 @RestController
 @RequestMapping("/api/tags")
 public class TagController {
@@ -41,24 +39,20 @@ public class TagController {
         return ResponseEntity.ok(tagService.getAll());
     }
 
-
-   @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<TagDTO>> getTagById(@PathVariable Long id) {
-    return ResponseEntity.ok(tagService.getById(id));
+        return ResponseEntity.ok(tagService.getById(id));
     }
 
-
-   @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TagDTO>> updateTag(@Valid @PathVariable Long id, @RequestBody TagVMUpdateDTO tagDTO) {
-       return ResponseEntity.ok(tagService.update(id, tagDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<TagDTO>> updateTag(@Valid @PathVariable Long id,
+            @RequestBody TagVMUpdateDTO tagDTO) {
+        return ResponseEntity.ok(tagService.update(id, tagDTO));
     }
 
-        @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteTag(@PathVariable Long id) {
         return ResponseEntity.ok(tagService.delete(id));
     }
-    
-    
-    
-    
+
 }

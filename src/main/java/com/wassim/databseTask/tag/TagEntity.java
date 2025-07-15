@@ -31,13 +31,11 @@ public class TagEntity {
 
     private String name;
 
-   @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity  user;
-    
-    
+    private UserEntity user;
 
 }

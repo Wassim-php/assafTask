@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
 
         if (comment.getTagId() != null) {
             TagEntity tag = tagRepository.findById(comment.getTagId())
-                .orElseThrow(() -> new RuntimeException("Tag not found"));
+                    .orElseThrow(() -> new RuntimeException("Tag not found"));
             entity.setTag(tag);
         }
 
@@ -58,53 +58,53 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public ApiResponse<CommentDTO> create(CommentVMCreateDTO dto) {
         CommentEntity entity = new CommentEntity();
-    entity.setContent(dto.getContent());
+        entity.setContent(dto.getContent());
 
-    TagEntity tag = tagRepository.findById(dto.getTagId())
-            .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
-    entity.setTag(tag);
-    entity.setUser(userService.getCurrentUser());
+        TagEntity tag = tagRepository.findById(dto.getTagId())
+                .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
+        entity.setTag(tag);
+        entity.setUser(userService.getCurrentUser());
 
-    CommentDTO savedDto = mapTo(commentRepositry.save(entity));
-    return new ApiResponse<>("Comment created successfully", savedDto, true);
+        CommentDTO savedDto = mapTo(commentRepositry.save(entity));
+        return new ApiResponse<>("Comment created successfully", savedDto, true);
     }
 
     @Override
-public ApiResponse<List<CommentDTO>> getAll() {
-    List<CommentDTO> comments = commentRepositry.findAll()
-        .stream().map(this::mapTo).collect(Collectors.toList());
-    return new ApiResponse<>("Comments fetched successfully", comments, true);
-}
+    public ApiResponse<List<CommentDTO>> getAll() {
+        List<CommentDTO> comments = commentRepositry.findAll()
+                .stream().map(this::mapTo).collect(Collectors.toList());
+        return new ApiResponse<>("Comments fetched successfully", comments, true);
+    }
 
-   @Override
-public ApiResponse<CommentDTO> getById(Long id) {
-    CommentEntity comment = commentRepositry.findById(id)
-        .orElseThrow(() -> new RuntimeException("Comment not found"));
+    @Override
+    public ApiResponse<CommentDTO> getById(Long id) {
+        CommentEntity comment = commentRepositry.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-    return new ApiResponse<>("Comment found", mapTo(comment), true);
-}
+        return new ApiResponse<>("Comment found", mapTo(comment), true);
+    }
 
     @Override
     public ApiResponse<CommentDTO> update(Long id, CommentVMUpdateDTO dto) {
-    CommentEntity entity = commentRepositry.findById(id)
-        .orElseThrow(() -> new RuntimeException("Comment not found"));
+        CommentEntity entity = commentRepositry.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
 
         entity.setContent(dto.getContent());
 
-    if (dto.getTagId() != null) {
-        TagEntity tag = tagRepository.findById(dto.getTagId())
-            .orElseThrow(() -> new RuntimeException("Tag not found"));
-        entity.setTag(tag);
+        if (dto.getTagId() != null) {
+            TagEntity tag = tagRepository.findById(dto.getTagId())
+                    .orElseThrow(() -> new RuntimeException("Tag not found"));
+            entity.setTag(tag);
+        }
+
+        return new ApiResponse<>("Comment updated successfully", mapTo(commentRepositry.save(entity)), true);
     }
 
-    return new ApiResponse<>("Comment updated successfully", mapTo(commentRepositry.save(entity)), true);
-}
-
     @Override
-public ApiResponse<Void> delete(Long id) {
-    CommentEntity comment = commentRepositry.findById(id)
-        .orElseThrow(() -> new RuntimeException("Comment not found"));
-    commentRepositry.deleteById(id);
-    return new ApiResponse<>("Comment deleted successfully", null, true);
-}
+    public ApiResponse<Void> delete(Long id) {
+        CommentEntity comment = commentRepositry.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        commentRepositry.deleteById(id);
+        return new ApiResponse<>("Comment deleted successfully", null, true);
+    }
 }

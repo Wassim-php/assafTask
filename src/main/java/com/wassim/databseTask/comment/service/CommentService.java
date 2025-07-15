@@ -17,5 +17,5 @@ public interface CommentService {
     ApiResponse<CommentDTO> update(Long id, CommentVMUpdateDTO commentVMUpdateDTO);
 
     ApiResponse<Void> delete(Long id);
-    
+
 }

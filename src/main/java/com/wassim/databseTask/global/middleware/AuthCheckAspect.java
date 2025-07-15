@@ -12,14 +12,13 @@ import com.wassim.databseTask.user.service.UserServiceImpl;
 @Aspect
 @Component
 public class AuthCheckAspect {
-    
+
     @Autowired
     private UserServiceImpl userService;
 
-
     @Before("@annotation(requireLogin)")
-    public void checkIfLoggedIn(RequireLogin requireLogin){
-        if(userService.getCurrentUser() == null) {
+    public void checkIfLoggedIn(RequireLogin requireLogin) {
+        if (userService.getCurrentUser() == null) {
             throw new UnauthorizedException("You must be logged in to access this resource");
         }
     }

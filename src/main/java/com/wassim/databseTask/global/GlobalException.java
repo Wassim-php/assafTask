@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.wassim.databseTask.Response.ApiResponse;
 import com.wassim.databseTask.global.Exceptions.BadRequestException;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
+import com.wassim.databseTask.global.Exceptions.UnauthorizedException;
 
 @ControllerAdvice
 public class GlobalException {
@@ -50,6 +51,15 @@ public class GlobalException {
         return new ResponseEntity<>(
         new ApiResponse<>(ex.getMessage(), null, false),
         HttpStatus.BAD_REQUEST
+    );
+
+    
+}
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleUnauthorized(UnauthorizedException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+        new ApiResponse<>(ex.getMessage(), null, false)
     );
 }
 

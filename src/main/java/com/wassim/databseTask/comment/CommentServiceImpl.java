@@ -79,12 +79,7 @@ public ApiResponse<CommentDTO> update(Long id, CommentDTO dto) {
     CommentEntity entity = commentRepositry.findById(id)
         .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-    UserEntity currentUser = userService.getCurrentUser();
-    if (!entity.getUser().getId().equals(currentUser.getId())) {
-        throw new RuntimeException("You are not authorized to update this comment");
-    }
-
-    entity.setContent(dto.getContent());
+        entity.setContent(dto.getContent());
 
     if (dto.getTagId() != null) {
         TagEntity tag = tagRepository.findById(dto.getTagId())
@@ -99,11 +94,6 @@ public ApiResponse<CommentDTO> update(Long id, CommentDTO dto) {
 public ApiResponse<Void> delete(Long id) {
     CommentEntity comment = commentRepositry.findById(id)
         .orElseThrow(() -> new RuntimeException("Comment not found"));
-
-    if (!comment.getUser().getId().equals(userService.getCurrentUser().getId())) {
-        throw new RuntimeException("You are not authorized to delete this comment");
-    }
-
     commentRepositry.deleteById(id);
     return new ApiResponse<>("Comment deleted successfully", null, true);
 }

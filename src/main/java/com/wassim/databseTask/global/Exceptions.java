@@ -12,4 +12,10 @@ public static class BadRequestException extends RuntimeException {
         super(message);
     }
 }
+
+public static class UnauthorizedException extends RuntimeException {
+    public UnauthorizedException(String message) {
+        super(message);
+    }
+}
 }

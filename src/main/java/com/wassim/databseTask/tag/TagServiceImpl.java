@@ -68,12 +68,6 @@ public class TagServiceImpl implements TagService {
     public ApiResponse<TagDTO> update(Long id, TagDTO tagDTO) {
         TagEntity tag = tagRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
-
-        UserEntity currentUser = userService.getCurrentUser();
-        if (!tag.getUser().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("You are not authorized to update this tag");
-        }
-
         tag.setName(tagDTO.getName());
         TagDTO updated = mapTo(tagRepository.save(tag));
         return new ApiResponse<>("Tag updated successfully", updated, true);
@@ -83,11 +77,6 @@ public class TagServiceImpl implements TagService {
     public ApiResponse<Void> delete(Long id) {
         TagEntity tag = tagRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
-
-        if (!tag.getUser().getId().equals(userService.getCurrentUser().getId())) {
-            throw new RuntimeException("You are not authorized to delete this tag");
-        }
-
         tagRepository.deleteById(id);
         return new ApiResponse<>("Tag deleted successfully", null, true);
     }

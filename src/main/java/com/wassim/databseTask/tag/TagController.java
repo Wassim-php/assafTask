@@ -3,14 +3,16 @@ package com.wassim.databseTask.tag;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wassim.databseTask.tag.TagService;
-import com.wassim.databseTask.Response.ApiResponse;
-import com.wassim.databseTask.tag.*;
+import com.wassim.databseTask.global.Response.ApiResponse;
+import com.wassim.databseTask.tag.dto.TagDTO;
+import com.wassim.databseTask.tag.dto.TagVMCreateDTO;
+import com.wassim.databseTask.tag.dto.TagVMUpdateDTO;
+import com.wassim.databseTask.tag.service.TagService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +30,7 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<TagDTO>> createTag(@RequestBody TagDTO tagDTO) {
+    public ResponseEntity<ApiResponse<TagDTO>> createTag(@RequestBody TagVMCreateDTO tagDTO) {
         return ResponseEntity.ok(tagService.create(tagDTO));
     }
 
@@ -45,7 +47,7 @@ public class TagController {
 
 
    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TagDTO>> updateTag(@PathVariable Long id, @RequestBody TagDTO tagDTO) {
+    public ResponseEntity<ApiResponse<TagDTO>> updateTag(@PathVariable Long id, @RequestBody TagVMUpdateDTO tagDTO) {
        return ResponseEntity.ok(tagService.update(id, tagDTO));
     }
 

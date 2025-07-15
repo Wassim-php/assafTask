@@ -1,4 +1,4 @@
-package com.wassim.databseTask.tag;
+package com.wassim.databseTask.tag.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wassim.databseTask.comment.CommentDTO;
-import com.wassim.databseTask.Response.ApiResponse;
+import com.wassim.databseTask.comment.dto.CommentDTO;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
-import com.wassim.databseTask.user.UserEntity;
+import com.wassim.databseTask.global.Response.ApiResponse;
+import com.wassim.databseTask.tag.TagEntity;
+import com.wassim.databseTask.tag.TagRepository;
+import com.wassim.databseTask.tag.dto.TagDTO;
+import com.wassim.databseTask.tag.dto.TagVMCreateDTO;
+import com.wassim.databseTask.tag.dto.TagVMUpdateDTO;
 import com.wassim.databseTask.user.UserServiceImpl;
 
 @Service
@@ -43,11 +47,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public ApiResponse<TagDTO> create(TagDTO tagDTO) {
-        TagEntity entity = this.mapFrom(tagDTO);
-        entity.setUser(userService.getCurrentUser());
-        TagDTO saved = mapTo(tagRepository.save(entity));
-        return new ApiResponse<>("Tag created successfully", saved, true);
+    public ApiResponse<TagDTO> create(TagVMCreateDTO dto) {
+        TagEntity entity = new TagEntity();
+    entity.setName(dto.getName());
+    entity.setUser(userService.getCurrentUser());
+
+    TagDTO result = mapTo(tagRepository.save(entity));
+    return new ApiResponse<>("Tag created successfully", result, true);
     }
 
     @Override
@@ -65,12 +71,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public ApiResponse<TagDTO> update(Long id, TagDTO tagDTO) {
-        TagEntity tag = tagRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
+    public ApiResponse<TagDTO> update(Long id, TagVMUpdateDTO tagDTO) {
+         TagEntity tag = tagRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
         tag.setName(tagDTO.getName());
-        TagDTO updated = mapTo(tagRepository.save(tag));
-        return new ApiResponse<>("Tag updated successfully", updated, true);
+        TagDTO result = mapTo(tagRepository.save(tag));
+        return new ApiResponse<>("Tag updated successfully", result, true);
+
     }
 
     @Override

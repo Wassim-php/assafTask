@@ -7,7 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wassim.databseTask.Response.ApiResponse;
+import com.wassim.databseTask.global.Response.ApiResponse;
+import com.wassim.databseTask.user.dto.UserDTO;
+import com.wassim.databseTask.user.dto.UserVMCreateDTO;
+import com.wassim.databseTask.user.dto.UserVMUpdateDTO;
+import com.wassim.databseTask.user.service.UserService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +31,7 @@ public class UserController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<UserDTO>> create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse<UserDTO>> create(@RequestBody UserVMCreateDTO userDTO) {
         return ResponseEntity.ok(userService.create(userDTO));
     }
 
@@ -42,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDTO>> update(@PathVariable Long id, @RequestBody UserDTO userDTO) { 
+    public ResponseEntity<ApiResponse<UserDTO>> update(@PathVariable Long id, @RequestBody UserVMUpdateDTO userDTO) { 
         return ResponseEntity.ok(userService.update(id, userDTO));
     }
 

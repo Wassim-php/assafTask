@@ -12,7 +12,7 @@ import com.wassim.databseTask.global.Exceptions.UnauthorizedException;
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.tag.TagRepository;
 import com.wassim.databseTask.user.UserEntity;
-import com.wassim.databseTask.user.UserServiceImpl;
+import com.wassim.databseTask.user.service.UserServiceImpl;
 
 @Aspect
 @Component

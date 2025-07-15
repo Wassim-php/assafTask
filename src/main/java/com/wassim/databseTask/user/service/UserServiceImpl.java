@@ -1,4 +1,4 @@
-package com.wassim.databseTask.user;
+package com.wassim.databseTask.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.wassim.databseTask.Response.ApiResponse;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
+import com.wassim.databseTask.global.Response.ApiResponse;
+import com.wassim.databseTask.user.UserEntity;
+import com.wassim.databseTask.user.UserRepository;
+import com.wassim.databseTask.user.dto.UserDTO;
+import com.wassim.databseTask.user.dto.UserVMCreateDTO;
+import com.wassim.databseTask.user.dto.UserVMUpdateDTO;
 
 
 @Service
@@ -70,11 +75,14 @@ public class UserServiceImpl implements  UserDetailsService, UserService{
 
 
         @Override
-        public ApiResponse<UserDTO> create(UserDTO userDTO) {
-        UserEntity user = mapFrom(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        UserEntity savedUser = userRepository.save(user);
-        return new ApiResponse<>("User created successfully", mapTo(savedUser), true);
+        public ApiResponse<UserDTO> create(UserVMCreateDTO userDTO) {
+         UserEntity entity = new UserEntity();
+        entity.setUsername(userDTO.getUsername());
+        entity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        userRepository.save(entity);
+
+    return new ApiResponse<>("User created successfully", mapTo(entity), true);
         }    
         
 
@@ -94,15 +102,18 @@ public class UserServiceImpl implements  UserDetailsService, UserService{
 
 
          @Override
-        public ApiResponse<UserDTO> update(Long id, UserDTO userDTO) {
-        UserEntity existing = userRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        public ApiResponse<UserDTO> update(Long id, UserVMUpdateDTO userDTO) {
+         UserEntity user = userRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        existing.setUsername(userDTO.getUsername());
-        existing.setPassword(userDTO.getPassword()); 
+    user.setUsername(userDTO.getUsername());
 
-        UserEntity updated = userRepository.save(existing);
-        return new ApiResponse<>("User updated successfully", mapTo(updated), true);
+    if (userDTO.getPassword() != null && !userDTO.getPassword().isBlank()) {
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+    }
+
+    userRepository.save(user);
+    return new ApiResponse<>("User updated successfully", mapTo(user), true);
         }
 
         @Override

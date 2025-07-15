@@ -2,10 +2,12 @@ package com.wassim.databseTask.comment;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wassim.databseTask.*;
-import com.wassim.databseTask.Response.ApiResponse;
+import com.wassim.databseTask.comment.dto.CommentDTO;
+import com.wassim.databseTask.comment.dto.CommentVMCreateDTO;
+import com.wassim.databseTask.comment.dto.CommentVMUpdateDTO;
+import com.wassim.databseTask.comment.service.CommentService;
+import com.wassim.databseTask.global.Response.ApiResponse;
 
-import java.rmi.server.RMIClassLoader;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class CommentController {
     private CommentService commentService;
 
      @PostMapping("/create")
-    public ResponseEntity<ApiResponse<CommentDTO>> create(@RequestBody CommentDTO dto) {
+    public ResponseEntity<ApiResponse<CommentDTO>> create(@RequestBody CommentVMCreateDTO dto) {
         return ResponseEntity.ok(commentService.create(dto));
     }
 
@@ -42,7 +44,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CommentDTO>> update(@PathVariable Long id, @RequestBody CommentDTO dto) {
+    public ResponseEntity<ApiResponse<CommentDTO>> update(@PathVariable Long id, @RequestBody CommentVMUpdateDTO dto) {
         return ResponseEntity.ok(commentService.update(id, dto));
     }
 

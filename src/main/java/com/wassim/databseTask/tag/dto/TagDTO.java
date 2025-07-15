@@ -1,8 +1,8 @@
-package com.wassim.databseTask.tag;
+package com.wassim.databseTask.tag.dto;
 
 import java.util.List;
 
-import com.wassim.databseTask.comment.CommentDTO;
+import com.wassim.databseTask.comment.dto.CommentDTO;
 
 import lombok.Getter;
 import lombok.Setter;

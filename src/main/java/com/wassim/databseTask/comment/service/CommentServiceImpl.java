@@ -1,4 +1,4 @@
-package com.wassim.databseTask.comment;
+package com.wassim.databseTask.comment.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,12 +6,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wassim.databseTask.Response.ApiResponse;
+import com.wassim.databseTask.comment.CommentEntity;
+import com.wassim.databseTask.comment.CommentRepositry;
+import com.wassim.databseTask.comment.dto.CommentDTO;
+import com.wassim.databseTask.comment.dto.CommentVMCreateDTO;
+import com.wassim.databseTask.comment.dto.CommentVMUpdateDTO;
+import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
+import com.wassim.databseTask.global.Response.ApiResponse;
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.tag.TagRepository;
-import com.wassim.databseTask.tag.TagServiceImpl;
-import com.wassim.databseTask.user.UserEntity;
-import com.wassim.databseTask.user.UserServiceImpl;
+import com.wassim.databseTask.user.service.UserServiceImpl;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -52,11 +56,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ApiResponse<CommentDTO> create(CommentDTO dto) {
-        CommentEntity entity = this.mapFrom(dto);
-        entity.setUser(userService.getCurrentUser());
-        CommentDTO saved = mapTo(commentRepositry.save(entity));
-        return new ApiResponse<CommentDTO>("Comment created successfully", saved, true);
+    public ApiResponse<CommentDTO> create(CommentVMCreateDTO dto) {
+        CommentEntity entity = new CommentEntity();
+    entity.setContent(dto.getContent());
+
+    TagEntity tag = tagRepository.findById(dto.getTagId())
+            .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
+    entity.setTag(tag);
+    entity.setUser(userService.getCurrentUser());
+
+    CommentDTO savedDto = mapTo(commentRepositry.save(entity));
+    return new ApiResponse<>("Comment created successfully", savedDto, true);
     }
 
     @Override
@@ -75,7 +85,7 @@ public ApiResponse<CommentDTO> getById(Long id) {
 }
 
     @Override
-public ApiResponse<CommentDTO> update(Long id, CommentDTO dto) {
+    public ApiResponse<CommentDTO> update(Long id, CommentVMUpdateDTO dto) {
     CommentEntity entity = commentRepositry.findById(id)
         .orElseThrow(() -> new RuntimeException("Comment not found"));
 

@@ -7,8 +7,7 @@ import org.aspectj.lang.annotation.Before;
 
 import com.wassim.databseTask.global.Exceptions.UnauthorizedException;
 import com.wassim.databseTask.global.annotations.RequireLogin;
-
-import com.wassim.databseTask.user.UserServiceImpl;
+import com.wassim.databseTask.user.service.UserServiceImpl;
 
 @Aspect
 @Component

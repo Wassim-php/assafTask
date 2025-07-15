@@ -1,5 +1,4 @@
 package com.wassim.databseTask.comment;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.user.UserEntity;

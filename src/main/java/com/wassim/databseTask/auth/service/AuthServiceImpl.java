@@ -8,8 +8,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import com.wassim.databseTask.auth.AuthRequest;
-import com.wassim.databseTask.auth.AuthResponse;
+import com.wassim.databseTask.auth.payload.AuthDTO;
+import com.wassim.databseTask.auth.payload.AuthResponse;
 import com.wassim.databseTask.global.Response.ApiResponse;
 import com.wassim.databseTask.security.JwtUtility;
 import org.springframework.security.core.AuthenticationException;
@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     private JwtUtility jwtUtility;
 
     @Override
-    public ApiResponse<AuthResponse> login(AuthRequest authRequest) {
+    public ApiResponse<AuthResponse> login(AuthDTO authRequest) {
         try {
            org.springframework.security.core.Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())

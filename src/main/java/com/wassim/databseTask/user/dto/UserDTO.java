@@ -1,4 +1,4 @@
-package com.wassim.databseTask.user;
+package com.wassim.databseTask.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -8,6 +8,8 @@ import com.wassim.databseTask.comment.dto.CommentVMUpdateDTO;
 import com.wassim.databseTask.comment.service.CommentService;
 import com.wassim.databseTask.global.Response.ApiResponse;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class CommentController {
     private CommentService commentService;
 
      @PostMapping("/create")
-    public ResponseEntity<ApiResponse<CommentDTO>> create(@RequestBody CommentVMCreateDTO dto) {
+    public ResponseEntity<ApiResponse<CommentDTO>> create(@Valid @RequestBody CommentVMCreateDTO dto) {
         return ResponseEntity.ok(commentService.create(dto));
     }
 
@@ -44,7 +46,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CommentDTO>> update(@PathVariable Long id, @RequestBody CommentVMUpdateDTO dto) {
+    public ResponseEntity<ApiResponse<CommentDTO>> update(@Valid @PathVariable Long id, @RequestBody CommentVMUpdateDTO dto) {
         return ResponseEntity.ok(commentService.update(id, dto));
     }
 

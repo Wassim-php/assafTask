@@ -14,6 +14,8 @@ import com.wassim.databseTask.tag.dto.TagVMCreateDTO;
 import com.wassim.databseTask.tag.dto.TagVMUpdateDTO;
 import com.wassim.databseTask.tag.service.TagService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +32,7 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<TagDTO>> createTag(@RequestBody TagVMCreateDTO tagDTO) {
+    public ResponseEntity<ApiResponse<TagDTO>> createTag(@Valid @RequestBody TagVMCreateDTO tagDTO) {
         return ResponseEntity.ok(tagService.create(tagDTO));
     }
 
@@ -47,7 +49,7 @@ public class TagController {
 
 
    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TagDTO>> updateTag(@PathVariable Long id, @RequestBody TagVMUpdateDTO tagDTO) {
+    public ResponseEntity<ApiResponse<TagDTO>> updateTag(@Valid @PathVariable Long id, @RequestBody TagVMUpdateDTO tagDTO) {
        return ResponseEntity.ok(tagService.update(id, tagDTO));
     }
 

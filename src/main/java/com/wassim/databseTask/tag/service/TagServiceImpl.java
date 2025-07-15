@@ -15,7 +15,7 @@ import com.wassim.databseTask.tag.TagRepository;
 import com.wassim.databseTask.tag.dto.TagDTO;
 import com.wassim.databseTask.tag.dto.TagVMCreateDTO;
 import com.wassim.databseTask.tag.dto.TagVMUpdateDTO;
-import com.wassim.databseTask.user.UserServiceImpl;
+import com.wassim.databseTask.user.service.UserServiceImpl;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -48,7 +48,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ApiResponse<TagDTO> create(TagVMCreateDTO dto) {
-        TagEntity entity = new TagEntity();
+    TagEntity entity = new TagEntity();
     entity.setName(dto.getName());
     entity.setUser(userService.getCurrentUser());
 

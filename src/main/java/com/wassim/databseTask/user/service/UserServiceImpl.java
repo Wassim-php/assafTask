@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return dto;
     }
 
-    private UserEntity mapFrom(UserDTO dto) {
+    public UserEntity mapFrom(UserDTO dto) {
         UserEntity entity = new UserEntity();
         entity.setId(dto.getId());
         entity.setUsername(dto.getUsername());

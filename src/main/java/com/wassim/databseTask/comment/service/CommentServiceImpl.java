@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
         return dto;
     }
 
-    private CommentEntity mapFrom(CommentDTO comment) {
+    public CommentEntity mapFrom(CommentDTO comment) {
         CommentEntity entity = new CommentEntity();
         entity.setId(comment.getId());
         entity.setContent(comment.getContent());

@@ -22,17 +22,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ApiResponse<AuthResponse> login(AuthDTO authRequest) {
-        try {
-            org.springframework.security.core.Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-            String token = jwtUtility.generateToken(authRequest.getUsername());
-            return new ApiResponse<AuthResponse>("Login successful", new AuthResponse(token), true);
+        org.springframework.security.core.Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-        } catch (AuthenticationException e) {
-            return new ApiResponse<>("Invalid credentials", null, false);
-        } catch (Exception e) {
-            return new ApiResponse<>("Something went wrong: " + e.getMessage(), null, false);
-        }
+        String token = jwtUtility.generateToken(authRequest.getUsername());
+        return new ApiResponse<AuthResponse>("Login successful", new AuthResponse(token), true);
+
     }
 }

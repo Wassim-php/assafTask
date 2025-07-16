@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.wassim.databseTask.global.Exceptions.BadRequestException;
+import com.wassim.databseTask.global.Exceptions.ForbiddenException;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
 import com.wassim.databseTask.global.Exceptions.UnauthorizedException;
 import com.wassim.databseTask.global.Response.ApiResponse;
@@ -64,6 +65,7 @@ public class GlobalException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        System.out.println("❌ Validation failed: " + ex.getMessage());
         List<Map<String, String>> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -75,8 +77,16 @@ public class GlobalException {
                 })
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(
-                new ApiResponse<Object>("Validation failed", errors, false), HttpStatus.BAD_REQUEST);
+         return new ResponseEntity<>(
+                new ApiResponse<>("Validation failed", null, false),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ApiResponse<Object>> HandleForbiddenException(ForbiddenException ex){
+         return new ResponseEntity<>(
+                new ApiResponse<>(ex.getMessage(), null, false),
+                HttpStatus.BAD_REQUEST);
     }
 
 }

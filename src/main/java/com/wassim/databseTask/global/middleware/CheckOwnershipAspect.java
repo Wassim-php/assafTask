@@ -14,9 +14,15 @@ import com.wassim.databseTask.tag.TagRepository;
 import com.wassim.databseTask.user.UserEntity;
 import com.wassim.databseTask.user.service.UserServiceImpl;
 
+import jakarta.annotation.PostConstruct;
+
 @Aspect
 @Component
 public class CheckOwnershipAspect {
+    @PostConstruct
+    public void init() {
+        System.out.println("✅ Aspect Bean Initialized");
+    }
 
     @Autowired
     private UserServiceImpl userService;
@@ -27,9 +33,11 @@ public class CheckOwnershipAspect {
     @Autowired
     private CommentRepositry commentRepositry;
 
-    @Before("execution(* com.wassim.databseTask.comment.CommentServiceImpl.update(..)) || " +
-            "execution(* com.wassim.databseTask.comment.CommentServiceImpl.delete(..))")
+    @Before("execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.update(..)) || " +
+            "execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.delete(..))")
     public void checkCommentOwnership(JoinPoint joinPoint) {
+        System.out
+                .println("✅ Aspect: checkCommentOwnership triggered for method: " + joinPoint.getSignature().getName());
 
         Long commentId = (Long) joinPoint.getArgs()[0];
         CommentEntity comment = commentRepositry.findById(commentId)
@@ -41,9 +49,10 @@ public class CheckOwnershipAspect {
         }
     }
 
-    @Before("execution(* com.wassim.databseTask.tag.TagServiceImpl.update(..)) || " +
-            "execution(* com.wassim.databseTask.tag.TagServiceImpl.delete(..))")
+    @Before("execution(* com.wassim.databseTask.tag.service.TagServiceImpl.update(..)) || " +
+            "execution(* com.wassim.databseTask.tag.service.TagServiceImpl.delete(..))")
     public void checkTagOwnership(JoinPoint joinPoint) {
+        System.out.println("✅ Aspect: checkTagOwnership triggered for method: " + joinPoint.getSignature().getName());
 
         Long tagId = (Long) joinPoint.getArgs()[0];
         TagEntity tag = tagRepository.findById(tagId)
@@ -54,4 +63,5 @@ public class CheckOwnershipAspect {
             throw new UnauthorizedException("You are not authorized to modify this tag.");
         }
     }
+
 }

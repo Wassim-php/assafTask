@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.wassim.databseTask.global.Exceptions.ForbiddenException;
+
 import java.io.IOException;
 
 @Component
@@ -32,7 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtility.extractUsername(jwt);
             } catch (Exception e) {
-                // Invalid token
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid token");
+                return;
             }
         }
 

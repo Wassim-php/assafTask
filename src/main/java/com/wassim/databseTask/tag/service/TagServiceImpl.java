@@ -85,6 +85,9 @@ public class TagServiceImpl implements TagService {
     public ApiResponse<Void> delete(Long id) {
         TagEntity tag = tagRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + id));
+        if (tag.getComments() != null && !tag.getComments().isEmpty()) {
+            throw new ResourceNotFoundException("Cannot delete tag with existing comments");
+        }
         tagRepository.deleteById(id);
         return new ApiResponse<>("Tag deleted successfully", null, true);
     }

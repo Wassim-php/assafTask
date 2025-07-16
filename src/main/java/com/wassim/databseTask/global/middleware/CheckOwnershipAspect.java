@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import com.wassim.databseTask.comment.CommentEntity;
 import com.wassim.databseTask.comment.CommentRepositry;
 import com.wassim.databseTask.global.Exceptions.UnauthorizedException;
+import com.wassim.databseTask.post.PostEntity;
+import com.wassim.databseTask.post.PostRepository;
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.tag.TagRepository;
 import com.wassim.databseTask.user.UserEntity;
@@ -32,6 +34,9 @@ public class CheckOwnershipAspect {
 
     @Autowired
     private CommentRepositry commentRepositry;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Before("execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.update(..)) || " +
             "execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.delete(..))")
@@ -62,6 +67,21 @@ public class CheckOwnershipAspect {
         if (!tag.getUser().getId().equals(currentUser.getId())) {
             throw new UnauthorizedException("You are not authorized to modify this tag.");
         }
+    }
+
+
+    @Before("execution(* com.wassim.databseTask.post.service.PostServiceImpl.update(..)) || " +
+            "execution(* com.wassim.databseTask.post.service.PostServiceImpl.delete(..))")
+    public void checkPostOwnership(JoinPoint joinPoint){
+        Long postId = (Long) joinPoint.getArgs()[0];
+        PostEntity post = postRepository.findById(postId)
+                        .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        UserEntity user = userService.getCurrentUser();
+        if(!post.getAuthor().getId().equals(user.getId())){
+            throw new UnauthorizedException("You are not authorized to modify this post. ");
+        }                
+
     }
 
 }

@@ -1,8 +1,8 @@
 package com.wassim.databseTask.post.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
+
+import com.wassim.databseTask.comment.dto.CommentDTO;
 
 import com.wassim.databseTask.global.Response.ApiResponse;
 import com.wassim.databseTask.post.dto.PostDTO;
@@ -19,6 +19,12 @@ public interface PostService {
     ApiResponse<PostDTO> update(Long id, PostVMUpdateDTO postVMUpdateDTO);
 
     ApiResponse<Void> delete(Long id);
-    
+
     ApiResponse<?> likePost(Long postId);
+
+    ApiResponse<Void> addComment(Long postId, CommentDTO comment);
+
+    ApiResponse<Void> removeComment(Long commentId);
+
+    ApiResponse<Page<PostDTO>> searchPosts(String keyword, String author, int page, int size);
 }

@@ -10,7 +10,7 @@ import com.wassim.databseTask.comment.CommentEntity;
 import com.wassim.databseTask.comment.CommentRepositry;
 import com.wassim.databseTask.global.Exceptions.UnauthorizedException;
 import com.wassim.databseTask.post.PostEntity;
-import com.wassim.databseTask.post.PostRepository;
+import com.wassim.databseTask.post.repository.PostRepository;
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.tag.TagRepository;
 import com.wassim.databseTask.user.UserEntity;
@@ -39,7 +39,8 @@ public class CheckOwnershipAspect {
     private PostRepository postRepository;
 
     @Before("execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.update(..)) || " +
-            "execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.delete(..))")
+            "execution(* com.wassim.databseTask.comment.service.CommentServiceImpl.delete(..)) || " +
+            "execution(* com.wassim.databseTask.post.service.PostServiceImpl.removeComment(..))")
     public void checkCommentOwnership(JoinPoint joinPoint) {
         System.out
                 .println("✅ Aspect: checkCommentOwnership triggered for method: " + joinPoint.getSignature().getName());

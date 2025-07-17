@@ -1,5 +1,6 @@
 package com.wassim.databseTask.comment;
 
+import com.wassim.databseTask.post.PostEntity;
 import com.wassim.databseTask.tag.TagEntity;
 import com.wassim.databseTask.user.UserEntity;
 
@@ -29,5 +30,9 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private PostEntity post;
 
 }

@@ -1,23 +1,31 @@
 package com.wassim.databseTask.post.service;
 
+import com.wassim.databseTask.comment.CommentEntity;
+import com.wassim.databseTask.comment.CommentRepositry;
+import com.wassim.databseTask.comment.dto.CommentDTO;
+
+import com.wassim.databseTask.comment.service.CommentServiceImpl;
 import com.wassim.databseTask.global.Exceptions.ResourceNotFoundException;
 import com.wassim.databseTask.global.Response.ApiResponse;
 import com.wassim.databseTask.post.PostEntity;
-import com.wassim.databseTask.post.PostRepository;
 import com.wassim.databseTask.post.dto.PostDTO;
 import com.wassim.databseTask.post.dto.PostVMCreateDTO;
 import com.wassim.databseTask.post.dto.PostVMUpdateDTO;
+import com.wassim.databseTask.post.repository.PostRepository;
+import com.wassim.databseTask.post.repository.specifications.PostSpecifications;
 import com.wassim.databseTask.user.UserEntity;
-
+import com.wassim.databseTask.user.UserRepository;
 import com.wassim.databseTask.user.service.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +37,15 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CommentServiceImpl commentService;
+
+    @Autowired
+    private CommentRepositry commentRepositry;
+
     private PostDTO mapTo(PostEntity post) {
         PostDTO dto = new PostDTO();
         dto.setId(post.getId());
@@ -39,6 +56,12 @@ public class PostServiceImpl implements PostService {
                 post.getLikedUsers().stream()
                         .map(UserEntity::getId)
                         .collect(Collectors.toSet()));
+
+        List<CommentDTO> commentDTOs = post.getComments().stream()
+                .map(commentService::mapTo)
+                .collect(Collectors.toList());
+
+        dto.setComments(commentDTOs);
         return dto;
     }
 
@@ -104,5 +127,43 @@ public class PostServiceImpl implements PostService {
             postRepository.save(post);
             return new ApiResponse<>("Post liked", null, true);
         }
+    }
+
+    public ApiResponse<Void> addComment(Long postId, CommentDTO commentDto) {
+        CommentEntity commentEntity = commentService.mapFrom(commentDto);
+
+        PostEntity post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+
+        commentEntity.setPost(post);
+
+        commentRepositry.save(commentEntity);
+
+        return new ApiResponse<>("Comment added successfully", null, true);
+    }
+
+    public ApiResponse<Void> removeComment(Long commentId) {
+        return commentService.delete(commentId);
+    }
+
+    public ApiResponse<Page<PostDTO>> searchPosts(String keyword, String author, int page, int size) {
+        Specification<PostEntity> spec = (root, query, cb) -> null;
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and(PostSpecifications.hasKeyword(keyword));
+        }
+
+        if (author != null) {
+            UserEntity authorEntity = userRepository.findByUsername(author)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+            spec = spec.and(PostSpecifications.hasAuthor(authorEntity));
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostEntity> results = postRepository.findAll(spec, pageable);
+        Page<PostDTO> dtos = results.map(this::mapTo);
+
+        return new ApiResponse<>("Filtered posts", dtos, true);
+
     }
 }

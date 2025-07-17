@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private UserServiceImpl userService;
 
-    private CommentDTO mapTo(CommentEntity comment) {
+    public CommentDTO mapTo(CommentEntity comment) {
         CommentDTO dto = new CommentDTO();
         dto.setId(comment.getId());
         dto.setContent(comment.getContent());

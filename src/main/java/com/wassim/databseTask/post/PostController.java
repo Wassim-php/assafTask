@@ -1,13 +1,13 @@
 package com.wassim.databseTask.post;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.wassim.databseTask.comment.dto.CommentDTO;
 
 import com.wassim.databseTask.global.Response.ApiResponse;
 import com.wassim.databseTask.post.dto.PostDTO;
@@ -63,6 +63,25 @@ public class PostController {
     @PostMapping("/{id}/like")
     public ResponseEntity<ApiResponse<?>> likePost(@PathVariable Long id) {
         return ResponseEntity.ok(postService.likePost(id));
+    }
+
+    @PostMapping("/{id}/add-comment")
+    public ResponseEntity<ApiResponse<Void>> addComment(@PathVariable Long id, @RequestBody CommentDTO commentDTO) {
+        return ResponseEntity.ok(postService.addComment(id, commentDTO));
+    }
+
+    @DeleteMapping("/{id}/remove-comment/{commentId}")
+    public ResponseEntity<ApiResponse<Void>> removeComment(@PathVariable Long commentId) {
+        return ResponseEntity.ok(postService.removeComment(commentId));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<PostDTO>>> search(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String author,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(postService.searchPosts(keyword, author, page, size));
     }
 
 }

@@ -12,6 +12,9 @@ import com.wassim.databseTask.user.UserEntity;
 import com.wassim.databseTask.user.service.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,10 +62,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ApiResponse<List<PostDTO>> getAll() {
-        List<PostDTO> posts = postRepository.findAll()
-                .stream().map(this::mapTo).collect(Collectors.toList());
-        return new ApiResponse<>("Posts fetched successfully", posts, true);
+    public ApiResponse<Page<PostDTO>> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostEntity> posts = postRepository.findAll(pageable);
+        Page<PostDTO> postDTOs = posts.map(this::mapTo);
+        return new ApiResponse<>("Posts fetched successfully", postDTOs, true);
     }
 
     @Override

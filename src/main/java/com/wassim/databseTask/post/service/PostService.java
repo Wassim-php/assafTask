@@ -2,6 +2,8 @@ package com.wassim.databseTask.post.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.wassim.databseTask.global.Response.ApiResponse;
 import com.wassim.databseTask.post.dto.PostDTO;
 import com.wassim.databseTask.post.dto.PostVMCreateDTO;
@@ -12,7 +14,7 @@ public interface PostService {
 
     ApiResponse<PostDTO> getById(Long id);
 
-    ApiResponse<List<PostDTO>> getAll();
+    ApiResponse<Page<PostDTO>> getAll(int page, int size);
 
     ApiResponse<PostDTO> update(Long id, PostVMUpdateDTO postVMUpdateDTO);
 

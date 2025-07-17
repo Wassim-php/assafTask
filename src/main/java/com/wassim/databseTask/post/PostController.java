@@ -3,8 +3,10 @@ package com.wassim.databseTask.post;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wassim.databseTask.global.Response.ApiResponse;
@@ -36,8 +38,10 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<PostDTO>>> getAll() {
-        return ResponseEntity.ok(postService.getAll());
+    public ResponseEntity<ApiResponse<Page<PostDTO>>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(postService.getAll(page, size));
     }
 
     @GetMapping("/{id}")
@@ -58,9 +62,7 @@ public class PostController {
 
     @PostMapping("/{id}/like")
     public ResponseEntity<ApiResponse<?>> likePost(@PathVariable Long id) {
-       
         return ResponseEntity.ok(postService.likePost(id));
     }
-    
 
 }

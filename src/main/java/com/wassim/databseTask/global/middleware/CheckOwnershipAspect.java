@@ -69,18 +69,17 @@ public class CheckOwnershipAspect {
         }
     }
 
-
     @Before("execution(* com.wassim.databseTask.post.service.PostServiceImpl.update(..)) || " +
             "execution(* com.wassim.databseTask.post.service.PostServiceImpl.delete(..))")
-    public void checkPostOwnership(JoinPoint joinPoint){
+    public void checkPostOwnership(JoinPoint joinPoint) {
         Long postId = (Long) joinPoint.getArgs()[0];
         PostEntity post = postRepository.findById(postId)
-                        .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("Post not found"));
 
         UserEntity user = userService.getCurrentUser();
-        if(!post.getAuthor().getId().equals(user.getId())){
+        if (!post.getAuthor().getId().equals(user.getId())) {
             throw new UnauthorizedException("You are not authorized to modify this post. ");
-        }                
+        }
 
     }
 

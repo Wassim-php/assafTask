@@ -1,5 +1,7 @@
 package com.wassim.databseTask.auth;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,12 @@ public class AuthController {
 
         ApiResponse<AuthResponse> response = authService.login(authRequestDTO);
         return ResponseEntity.status(response.isState() ? 200 : 401).body(response);
+
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(@RequestBody Map<String, String> request) {
+        return ResponseEntity.ok(authService.refresh(request));
 
     }
 

@@ -84,25 +84,7 @@
      <artifactId>scala-library</artifactId>
      <version>2.13.0</version>
    </dependency>
- 
-   <dependency>
-     <groupId>org.scala-lang</groupId>
-     <artifactId>scala-library</artifactId>
-     <version>2.13.0</version>
-   </dependency>
- 
-   <dependency>
-     <groupId>org.scala-lang</groupId>
-     <artifactId>scala-library</artifactId>
-     <version>2.13.0</version>
-   </dependency>
- 
-   <dependency>
-     <groupId>com.lkeehl</groupId>
-     <artifactId>tagapi</artifactId>
-     <version>1.0.3</version>
-   </dependency>
- 
+
    <dependency>
      <groupId>com.lkeehl</groupId>
      <artifactId>tagapi</artifactId>
@@ -140,15 +122,11 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-aop</artifactId>
 </dependency>
-<dependency>
-    <groupId>jakarta.validation</groupId>
-    <artifactId>jakarta.validation-api</artifactId>
-</dependency>
 
 <dependency>
   <groupId>org.springdoc</groupId>
   <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-  <version>2.2.0</version>
+  <version>2.5.0</version>
 </dependency>
 
 <dependency>
@@ -156,7 +134,15 @@
     <artifactId>spring-boot-devtools</artifactId>
     <scope>runtime</scope>
     <optional>true</optional>
+	<exclusions>
+		<exclusion>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-common</artifactId>
+		</exclusion>
+	</exclusions>
 </dependency>
+
+
 
  </dependencies>
 

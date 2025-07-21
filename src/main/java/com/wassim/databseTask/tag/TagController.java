@@ -50,7 +50,7 @@ public class TagController {
         return ResponseEntity.ok(tagService.update(id, tagDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteTag(@PathVariable Long id) {
         return ResponseEntity.ok(tagService.delete(id));
     }

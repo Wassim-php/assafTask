@@ -25,7 +25,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -112,7 +111,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ApiResponse<?> likePost(Long postId) {
+    public ApiResponse<Object> likePost(Long postId) {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
 

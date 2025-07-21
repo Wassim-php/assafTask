@@ -61,7 +61,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<ApiResponse<?>> likePost(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Object>> likePost(@PathVariable Long id) {
         return ResponseEntity.ok(postService.likePost(id));
     }
 

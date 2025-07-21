@@ -20,7 +20,7 @@ public interface PostService {
 
     ApiResponse<Void> delete(Long id);
 
-    ApiResponse<?> likePost(Long postId);
+    ApiResponse<Object> likePost(Long postId);
 
     ApiResponse<Void> addComment(Long postId, CommentDTO comment);
 
